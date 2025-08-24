@@ -1,17 +1,17 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+// import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+// import { Document } from "mongoose";
 
 // Database schema definition (MongoDB example)
 
-@Schema({ collection: "examples", timestamps: true })
-export class ExampleSchema extends Document {
-  @Prop({ required: true })
+// @Schema({ collection: "examples", timestamps: true })
+export class ExampleSchema {
+  // @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, min: 0 })
+  // @Prop({ required: true, min: 0 })
   amount: number;
 
-  @Prop({ default: true })
+  // @Prop({ default: true })
   isActive: boolean;
 
   // Timestamps are added automatically by mongoose
@@ -21,7 +21,7 @@ export class ExampleSchema extends Document {
   // TODO: Add more properties, validations, indexes as needed
 }
 
-export const ExampleSchemaFactory = SchemaFactory.createForClass(ExampleSchema);
+// export const ExampleSchemaFactory = SchemaFactory.createForClass(ExampleSchema);
 
 // TODO: Add indexes for better performance
 // ExampleSchemaFactory.index({ name: 1 });
