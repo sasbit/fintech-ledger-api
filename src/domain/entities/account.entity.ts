@@ -1,4 +1,4 @@
-import { Money } from '../../shared/domain/value-objects/money';
+import { Money } from '@shared/domain/value-objects/money';
 
 export enum AccountType {
   ASSET = 'ASSET',

@@ -27,10 +27,7 @@
         "@config/*": ["src/config/*"],
         "@database/*": ["src/database/*"],
         "@app.module": ["src/app.module"],
-        "@example.entity": ["src/domain/entities/example.entity"],
-        "@example.repository.interface": ["src/domain/repositories/example.repository.interface"],
-        "@example.repository": ["src/infrastructure/repositories/example.repository"],
-        "@example.controller": ["src/api/example.controller"]
+
       }
   }
 }
