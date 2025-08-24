@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 // import { InjectModel } from "@nestjs/mongoose";
 // import { Model } from "mongoose";
-import { ExampleEntity } from "../../domain/entities/example.entity";
-import { IExampleRepository } from "../../domain/repositories/example.repository.interface";
+import { ExampleEntity } from "@domain/entities/example.entity";
+import { IExampleRepository } from "@domain/repositories/example.repository.interface";
 
 @Injectable()
 export class ExampleRepository implements IExampleRepository {

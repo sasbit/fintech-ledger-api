@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { ExampleController } from "./example.controller";
+import { ExampleController } from "@api/example.controller";
 // import { ExampleService } from "../application/services/example.service";
 
 @Module({

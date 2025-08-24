@@ -1,4 +1,4 @@
-import { ExampleEntity } from "../entities/example.entity";
+import { ExampleEntity } from "@domain/entities/example.entity";
 
 // Repository interfaces define data access contracts for the domain
 
