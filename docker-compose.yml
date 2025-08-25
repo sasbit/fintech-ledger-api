@@ -1,0 +1,76 @@
+# Simple Ledger Docker Compose Configuration
+
+services:
+  # MongoDB Database Service
+  mongodb:
+    image: mongo:7.0
+    container_name: simple-ledger-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: simple-ledger
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - ledger-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # API Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: simple-ledger-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/simple-ledger?authSource=admin
+      PORT: 3000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - ledger-network
+    volumes:
+      - ./logs:/app/logs
+
+  # MongoDB Health Check Service
+  mongo-health:
+    image: mongo:7.0
+    container_name: mongo-health-check
+    restart: "no"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Waiting for MongoDB to be ready...'
+        until mongosh --host mongodb --port 27017 -u admin -p password123 --authenticationDatabase admin --eval 'db.runCommand("ping").ok' --quiet; do
+          echo 'MongoDB is not ready yet...'
+          sleep 2
+        done
+        echo 'MongoDB is ready!'
+        exit 0
+      "
+    networks:
+      - ledger-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  ledger-network:
+    driver: bridge
