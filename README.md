@@ -77,7 +77,7 @@ Navigate to: http://localhost:3000/api/docs
 ### Test Endpoints
 
 #### Account Management
-1. Click lock icon 🔒 and enter token (Bearer + token)
+1. Click lock icon and enter token (Bearer + token)
 2. **POST /api/v1/accounts** - Create account
 3. **GET /api/v1/accounts** - List accounts
 4. **GET /api/v1/accounts/{id}/balance** - Get balance

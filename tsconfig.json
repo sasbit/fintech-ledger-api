@@ -27,7 +27,7 @@
         "@config/*": ["src/config/*"],
         "@database/*": ["src/database/*"],
         "@app.module": ["src/app.module"],
-
+        
       }
   }
 }
