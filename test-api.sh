@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo "Testing Simple Ledger API..."
+echo "Testing Ledger API..."
 echo "=================================="
 
-# Check if jq is installed
 if ! command -v jq &> /dev/null; then
     echo "jq is not installed. Please install it first:"
     echo "   macOS: brew install jq"
@@ -11,7 +10,6 @@ if ! command -v jq &> /dev/null; then
     exit 1
 fi
 
-# Check if the API is running
 echo "1. Checking if API is running..."
 if ! curl -s http://localhost:3000/health > /dev/null; then
     echo "API is not running. Please start it with: docker compose up --build"
@@ -19,13 +17,11 @@ if ! curl -s http://localhost:3000/health > /dev/null; then
 fi
 echo "API is running"
 
-# 1. Health check
 echo ""
 echo "2. Health check..."
 HEALTH_RESPONSE=$(curl -s http://localhost:3000/health)
 echo "Response: $HEALTH_RESPONSE"
 
-# 2. Get auth token
 echo ""
 echo "3. Getting authentication token..."
 TOKEN_RESPONSE=$(curl -s -X POST http://localhost:3000/api/v1/auth/login \
@@ -39,7 +35,6 @@ if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
 fi
 echo "Token received: ${TOKEN:0:20}..."
 
-# 3. Test protected endpoints
 echo ""
 echo "4. Testing protected endpoints..."
 ACCOUNTS_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
@@ -47,7 +42,6 @@ ACCOUNTS_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
 ACCOUNT_COUNT=$(echo $ACCOUNTS_RESPONSE | jq '.data | length')
 echo "Accounts found: $ACCOUNT_COUNT"
 
-# 4. Test account entries
 echo ""
 echo "5. Testing account entries endpoint..."
 ENTRIES_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
@@ -55,7 +49,6 @@ ENTRIES_RESPONSE=$(curl -s -H "Authorization: Bearer $TOKEN" \
 ENTRY_COUNT=$(echo $ENTRIES_RESPONSE | jq '.data | length')
 echo "Entries found: $ENTRY_COUNT"
 
-# 5. Test rate limiting
 echo ""
 echo "6. Testing rate limiting..."
 echo "   Making 3 rapid login requests..."
@@ -72,7 +65,6 @@ for i in {1..3}; do
     sleep 0.1
 done
 
-# 6. Test Swagger documentation
 echo ""
 echo "7. Testing API documentation..."
 DOCS_RESPONSE=$(curl -s -I http://localhost:3000/api/docs | head -1)
@@ -82,7 +74,6 @@ else
     echo "Swagger documentation not accessible: $DOCS_RESPONSE"
 fi
 
-# 7. Test unauthorized access
 echo ""
 echo "8. Testing unauthorized access..."
 UNAUTHORIZED_RESPONSE=$(curl -s -w "%{http_code}" http://localhost:3000/api/v1/accounts/sample_cash_account/entries)
@@ -98,13 +89,13 @@ echo "=================================="
 echo "All tests completed!"
 echo ""
 echo "Summary:"
-echo "   - API Health: ✅"
-echo "   - Authentication: ✅"
-echo "   - Protected Endpoints: ✅"
-echo "   - Account Entries: ✅"
-echo "   - Rate Limiting: ✅"
-echo "   - API Documentation: ✅"
-echo "   - Security: ✅"
+echo "   - API Health: OK"
+echo "   - Authentication: OK"
+echo "   - Protected Endpoints: OK"
+echo "   - Account Entries: OK"
+echo "   - Rate Limiting: OK"
+echo "   - API Documentation: OK"
+echo "   - Security: OK"
 echo ""
 echo "Access your API:"
 echo "   - API Base: http://localhost:3000"

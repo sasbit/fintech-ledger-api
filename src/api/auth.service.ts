@@ -22,8 +22,6 @@ export class AuthService {
   constructor(private jwtService: JwtService) {}
 
   async login(loginDto: LoginDto): Promise<LoginResponse> {
-    // For demo purposes, accept any username/password
-    // In production, you would validate against a user database
     if (!loginDto.username || !loginDto.password) {
       throw new Error('Username and password are required');
     }

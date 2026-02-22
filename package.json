@@ -1,7 +1,7 @@
 {
-  "name": "simple-ledger",
+  "name": "ledger",
   "version": "1.0.0",
-  "description": "A simplified double-entry ledger API with hash chaining",
+  "description": "Double-entry ledger API with hash chaining",
   "scripts": {
     "start": "nest start",
     "start:dev": "nest start --watch",

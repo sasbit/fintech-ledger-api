@@ -1,4 +1,4 @@
-# Simple Ledger API
+# Ledger API
 
 Double-entry accounting API with transaction validation, hash chaining, and JWT authentication. Enforces debits = credits and prevents data tampering.
 
@@ -9,8 +9,8 @@ Double-entry accounting API with transaction validation, hash chaining, and JWT 
 
 ### Start System
 ```bash
-git clone https://github.com/saschabittnerivy/simple-ledger
-cd simple-ledger
+git clone https://github.com/sasbit/fintech-ledger-api
+cd fintech-ledger-api
 docker compose up --build
 ```
 
@@ -331,20 +331,19 @@ curl -X POST http://localhost:3000/api/v1/ledger/postings \
 - `GET /api/docs` - Interactive API documentation (Swagger UI)
 - `GET /health` - Health check endpoint
 
-## New Features & Capabilities
+## Authentication System
 
-### 🔐 Authentication System
-The API now requires authentication for all operations. Here's how to use it:
+The API requires authentication for all operations:
+
+1. **Get a Token**: Use the login endpoint with any username/password (demo mode)
+2. **Use the Token**: Include `Authorization: Bearer YOUR_TOKEN` in all requests
+3. **Token Expiration**: Tokens are valid for 24 hours
 
 ### API Documentation
 - Swagger UI at `/api/docs`
 - All endpoints documented with DTOs
 - Authentication and error responses included
 - Interactive testing interface
-
-1. **Get a Token**: Use the login endpoint with any username/password (demo mode)
-2. **Use the Token**: Include `Authorization: Bearer YOUR_TOKEN` in all requests
-3. **Token Expiration**: Tokens are valid for 24 hours
 
 ### Account Entries
 - Endpoint: `/api/v1/accounts/:id/entries`
@@ -355,11 +354,6 @@ The API now requires authentication for all operations. Here's how to use it:
 - 100 requests per minute per client
 - Applied to all endpoints
 - Prevents API abuse
-
-### Interactive Documentation
-- Swagger UI at `/api/docs`
-- Test endpoints directly in browser
-- Complete API specification
 
 ## Troubleshooting
 
@@ -372,10 +366,7 @@ docker compose up --build
 
 ### If Ports Are Busy
 ```bash
-# Check what's using port 3000
 lsof -ti:3000 | xargs kill -9
-
-# Check what's using port 27017
 docker stop $(docker ps -q --filter ancestor=mongo:7.0)
 ```
 

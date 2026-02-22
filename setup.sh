@@ -1,10 +1,9 @@
 #!/bin/bash
 
-echo "Simple Ledger - CTO Setup Script"
+echo "Ledger - Setup Script"
 echo "================================="
 echo ""
 
-# Check if Docker is running
 if ! docker info > /dev/null 2>&1; then
     echo "ERROR: Docker is not running. Please start Docker Desktop first."
     exit 1
@@ -13,7 +12,6 @@ fi
 echo "SUCCESS: Docker is running"
 echo ""
 
-# Check if ports are available
 if lsof -ti:3000 > /dev/null 2>&1; then
     echo "WARNING: Port 3000 is in use. Stopping conflicting processes..."
     lsof -ti:3000 | xargs kill -9
@@ -29,20 +27,17 @@ fi
 echo "SUCCESS: Ports are available"
 echo ""
 
-# Start the system
-echo "Starting Simple Ledger system..."
+echo "Starting Ledger system..."
 docker compose up --build -d
 
 echo ""
 echo "Waiting for services to be ready..."
 
-# Wait for MongoDB to be healthy
 echo "   Waiting for MongoDB..."
 until docker compose ps mongodb | grep -q "healthy"; do
     sleep 2
 done
 
-# Wait for API to be ready
 echo "   Waiting for API..."
 until curl -s http://localhost:3000/health > /dev/null; do
     sleep 2
@@ -52,7 +47,6 @@ echo ""
 echo "SUCCESS: All services are ready!"
 echo ""
 
-# Show status
 echo "System Status:"
 docker compose ps
 

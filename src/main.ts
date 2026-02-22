@@ -8,10 +8,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port');
   
-  
   const config = new DocumentBuilder()
-    .setTitle('Simple Ledger API')
-    .setDescription('A simplified double-entry ledger API with hash chaining')
+    .setTitle('Ledger API')
+    .setDescription('Double-entry ledger API with hash chaining')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

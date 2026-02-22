@@ -1,13 +1,10 @@
-# Simple Ledger Docker Compose Configuration
-
 services:
-  # MongoDB Database Service
   mongodb:
     image: mongo:7.0
-    container_name: simple-ledger-mongodb
+    container_name: ledger-mongodb
     restart: unless-stopped
     environment:
-      MONGO_INITDB_DATABASE: simple-ledger
+      MONGO_INITDB_DATABASE: ledger
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password123
     ports:
@@ -24,19 +21,18 @@ services:
       retries: 5
       start_period: 30s
 
-  # API Service
   api:
     build:
       context: .
       dockerfile: Dockerfile
       target: production
-    container_name: simple-ledger-api
+    container_name: ledger-api
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: development
-      MONGODB_URI: mongodb://admin:password123@mongodb:27017/simple-ledger?authSource=admin
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/ledger?authSource=admin
       PORT: 3000
     depends_on:
       mongodb:
@@ -46,7 +42,6 @@ services:
     volumes:
       - ./logs:/app/logs
 
-  # MongoDB Health Check Service
   mongo-health:
     image: mongo:7.0
     container_name: mongo-health-check
